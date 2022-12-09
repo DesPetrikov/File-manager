@@ -1,0 +1,26 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DesPetrikov/File-manager.git"
+  },
+  "keywords": [
+    " file_manager",
+    "nodeJS",
+    "RSSchool"
+  ],
+  "author": "Dzianis Petrykau <desik1603@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DesPetrikov/File-manager/issues"
+  },
+  "homepage": "https://github.com/DesPetrikov/File-manager#readme"
+}
