@@ -3,8 +3,9 @@ import * as readline from 'node:readline/promises';
 import { homedir } from 'os';
 import { resolve } from 'node:path';
 import { access } from 'node:fs/promises';
-import { checkIsDirectory } from './utils.js';
+import { checkIsDirectory, getAbsolutePath } from './utils.js';
 import { listOfItemsHandler } from './list.js';
+import { readFileHandler } from './read.js';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -19,13 +20,16 @@ rl.on('line', async (line) => {
     await setNewPath(args[0], command);
   } else if (command === 'ls' && args.length === 0) {
     await listOfItemsHandler(currentPath);
+  } else if (command === 'cat' && args[0]) {
+    readFileHandler(getAbsolutePath(currentPath, args[0]));
+  } else if (command === 'add') {
+	
   }
 
   if (line === '.exit') {
     rl.close();
   }
   console.log(`You are currently in ${currentPath}`);
-
 });
 
 rl.on('close', () => {
@@ -54,5 +58,5 @@ const setNewPath = async (path, commandName) => {
     currentPath = newPath;
   } catch (error) {
     console.error(error.message);
-  } 
+  }
 };
