@@ -6,6 +6,8 @@ import { access } from 'node:fs/promises';
 import { checkIsDirectory, getAbsolutePath } from './utils.js';
 import { listOfItemsHandler } from './list.js';
 import { readFileHandler } from './read.js';
+import { addFileHandler } from './add.js';
+import { renameFileHandler } from './rename.js';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -23,7 +25,11 @@ rl.on('line', async (line) => {
   } else if (command === 'cat' && args[0]) {
     readFileHandler(getAbsolutePath(currentPath, args[0]));
   } else if (command === 'add') {
-	
+    await addFileHandler(getAbsolutePath(currentPath, args[0]));
+  } else if (command === 'rn' && args.length === 2) {
+    const oldPath = getAbsolutePath(currentPath, args[0]);
+    const newPath = getAbsolutePath(currentPath, args[1]);
+    await renameFileHandler(oldPath, newPath);
   }
 
   if (line === '.exit') {
