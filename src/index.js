@@ -10,6 +10,8 @@ import { addFileHandler } from './add.js';
 import { renameFileHandler } from './rename.js';
 import { copyFileHandler } from './copy.js';
 import { moveFileHandler } from './move.js';
+import { deleteFileHandler } from './delete.js';
+import { getEOL } from './os/eol.js';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -17,35 +19,46 @@ const rl = readline.createInterface({
 });
 
 rl.on('line', async (line) => {
-  const [command, ...args] = line.split(' ');
-  if (command === 'up' && args.length === 0) {
-    await setNewPath('../');
-  } else if (command === 'cd' && args[0]) {
-    await setNewPath(args[0], command);
-  } else if (command === 'ls' && args.length === 0) {
-    await listOfItemsHandler(currentPath);
-  } else if (command === 'cat' && args[0]) {
-    readFileHandler(getAbsolutePath(currentPath, args[0]));
-  } else if (command === 'add') {
-    await addFileHandler(getAbsolutePath(currentPath, args[0]));
-  } else if (command === 'rn' && args.length === 2) {
-    const oldPath = getAbsolutePath(currentPath, args[0]);
-    const newPath = getAbsolutePath(currentPath, args[1]);
-    await renameFileHandler(oldPath, newPath);
-  } else if (command == 'cp' && args.length === 2) {
-    const pathToFile = getAbsolutePath(currentPath, args[0]);
-    const pathToNewDirectory = getAbsolutePath(currentPath, args[1]);
-    await copyFileHandler(pathToFile, pathToNewDirectory);
-  } else if (command == 'mv' && args.length === 2) {
-    const pathToFile = getAbsolutePath(currentPath, args[0]);
-    const pathToNewDirectory = getAbsolutePath(currentPath, args[1]);
-    await moveFileHandler(pathToFile, pathToNewDirectory);
-  }
+  try {
+    const [command, ...args] = line.split(' ');
+    if (command === 'up' && args.length === 0) {
+      await setNewPath('../');
+    } else if (command === 'cd' && args[0]) {
+      await setNewPath(args[0], command);
+    } else if (command === 'ls' && args.length === 0) {
+      await listOfItemsHandler(currentPath);
+    } else if (command === 'cat' && args[0]) {
+      readFileHandler(getAbsolutePath(currentPath, args[0]));
+    } else if (command === 'add') {
+      await addFileHandler(getAbsolutePath(currentPath, args[0]));
+    } else if (command === 'rn' && args.length === 2) {
+      const oldPath = getAbsolutePath(currentPath, args[0]);
+      const newPath = getAbsolutePath(currentPath, args[1]);
+      await renameFileHandler(oldPath, newPath);
+    } else if (command == 'cp' && args.length === 2) {
+      const pathToFile = getAbsolutePath(currentPath, args[0]);
+      const pathToNewDirectory = getAbsolutePath(currentPath, args[1]);
+      await copyFileHandler(pathToFile, pathToNewDirectory);
+    } else if (command == 'mv' && args.length === 2) {
+      const pathToFile = getAbsolutePath(currentPath, args[0]);
+      const pathToNewDirectory = getAbsolutePath(currentPath, args[1]);
+      await moveFileHandler(pathToFile, pathToNewDirectory);
+    } else if (command === 'rm' && args.length === 1) {
+      await deleteFileHandler(getAbsolutePath(currentPath, args[0]));
+    } else if (command === 'os') {
+		if(args[0] === '--EOL' && args.length === 1 ) {
+			getEOL()
+		}
+	 }
 
-  if (line === '.exit') {
-    rl.close();
+    if (line === '.exit') {
+      rl.close();
+    }
+  } catch (error) {
+    console.error(error.message);
+  } finally {
+    console.log(`You are currently in ${currentPath}`);
   }
-  console.log(`You are currently in ${currentPath}`);
 });
 
 rl.on('close', () => {
