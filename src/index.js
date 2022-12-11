@@ -8,6 +8,8 @@ import { listOfItemsHandler } from './list.js';
 import { readFileHandler } from './read.js';
 import { addFileHandler } from './add.js';
 import { renameFileHandler } from './rename.js';
+import { copyFileHandler } from './copy.js';
+import { moveFileHandler } from './move.js';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -30,6 +32,14 @@ rl.on('line', async (line) => {
     const oldPath = getAbsolutePath(currentPath, args[0]);
     const newPath = getAbsolutePath(currentPath, args[1]);
     await renameFileHandler(oldPath, newPath);
+  } else if (command == 'cp' && args.length === 2) {
+    const pathToFile = getAbsolutePath(currentPath, args[0]);
+    const pathToNewDirectory = getAbsolutePath(currentPath, args[1]);
+    await copyFileHandler(pathToFile, pathToNewDirectory);
+  } else if (command == 'mv' && args.length === 2) {
+    const pathToFile = getAbsolutePath(currentPath, args[0]);
+    const pathToNewDirectory = getAbsolutePath(currentPath, args[1]);
+    await moveFileHandler(pathToFile, pathToNewDirectory);
   }
 
   if (line === '.exit') {
