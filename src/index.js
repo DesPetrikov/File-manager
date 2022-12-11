@@ -12,6 +12,7 @@ import { copyFileHandler } from './copy.js';
 import { moveFileHandler } from './move.js';
 import { deleteFileHandler } from './delete.js';
 import { getEOL } from './os/eol.js';
+import { getCpusInfo } from './os/cpus.js';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -45,9 +46,11 @@ rl.on('line', async (line) => {
       await moveFileHandler(pathToFile, pathToNewDirectory);
     } else if (command === 'rm' && args.length === 1) {
       await deleteFileHandler(getAbsolutePath(currentPath, args[0]));
-    } else if (command === 'os') {
-		if(args[0] === '--EOL' && args.length === 1 ) {
+    } else if (command === 'os' && args.length === 1) {
+		if(args[0] === '--EOL') {
 			getEOL()
+		} else if (args[0] === '--cpus') {
+			getCpusInfo()
 		}
 	 }
 
