@@ -13,6 +13,9 @@ import { moveFileHandler } from './move.js';
 import { deleteFileHandler } from './delete.js';
 import { getEOL } from './os/eol.js';
 import { getCpusInfo } from './os/cpus.js';
+import { getHomeDirectory } from './os/homeDir.js';
+import { getUserName } from './os/userName.js';
+import { getCpuArchitecture } from './os/architecture.js';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -51,6 +54,12 @@ rl.on('line', async (line) => {
 			getEOL()
 		} else if (args[0] === '--cpus') {
 			getCpusInfo()
+		} else if (args[0] === '--homedir') {
+			getHomeDirectory()
+		} else if(args[0] === '--username') {
+			getUserName()
+		} else if(args[0] === '--architecture') {
+			getCpuArchitecture()
 		}
 	 }
 
