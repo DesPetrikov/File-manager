@@ -1,5 +1,5 @@
 import { rename } from 'node:fs/promises';
 
-export const renameFileHandler = async (oldPath, newPath) => {
+export const renameFile = async (oldPath, newPath) => {
   await rename(oldPath, newPath);
 };

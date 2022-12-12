@@ -5,7 +5,7 @@ import { createBrotliDecompress } from 'node:zlib';
 import { pipeline } from 'node:stream/promises';
 import { rm } from 'node:fs/promises';
 
-export const decompressFileHandler = async (pathToFile, pathToDestination) => {
+export const decompressFile = async (pathToFile, pathToDestination) => {
   try {
     const isDestinationDirectory = await checkIsDirectory(pathToDestination);
     const baseNameFromFile = parse(pathToFile).name;

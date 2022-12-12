@@ -4,7 +4,7 @@ import { createReadStream, createWriteStream } from 'node:fs';
 import { createBrotliCompress } from 'node:zlib';
 import { pipeline } from 'node:stream/promises';
 
-export const compressFileHandler = async (pathToFile, pathToDestination) => {
+export const compressFile = async (pathToFile, pathToDestination) => {
   try {
     const isDestinationDirectory = await checkIsDirectory(pathToDestination);
     const nameFromPath = parse(pathToFile).name;

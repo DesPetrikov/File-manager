@@ -1,6 +1,6 @@
 import { readdir } from 'node:fs/promises';
 
-export const listOfItemsHandler = async (path) => {
+export const showListOfItems = async (path) => {
   const itemsList = {
     directory: [],
     file: [],
