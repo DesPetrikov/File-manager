@@ -16,6 +16,9 @@ import { getCpusInfo } from './os/cpus.js';
 import { getHomeDirectory } from './os/homeDir.js';
 import { getUserName } from './os/userName.js';
 import { getCpuArchitecture } from './os/architecture.js';
+import { calculateHashHandler } from './hash/hashCalk.js';
+import { compressFileHandler } from './zip/compress.js';
+import { decompressFileHandler } from './zip/decompress.js';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -26,7 +29,10 @@ rl.on('line', async (line) => {
   try {
     const regExp = /\s(['|"])/g;
     const [command, ...args] = regExp.test(line)
-      ? line.replace(regExp, '*$1').split('*').map(chunk => chunk.replace(/^['|"]|['|"]$/g, ''))
+      ? line
+          .replace(regExp, '*$1')
+          .split('*')
+          .map((chunk) => chunk.replace(/^['|"]|['|"]$/g, ''))
       : line.split(' ');
     if (command === 'up' && args.length === 0) {
       await setNewPath('../');
@@ -64,6 +70,17 @@ rl.on('line', async (line) => {
       } else if (args[0] === '--architecture') {
         getCpuArchitecture();
       }
+    } else if (command === 'hash' && args.length === 1) {
+      const pathToFile = getAbsolutePath(currentPath, args[0]);
+      await calculateHashHandler(pathToFile);
+    } else if (command === 'compress' && args.length === 2) {
+      const pathToFile = getAbsolutePath(currentPath, args[0]);
+      const pathToDestination = getAbsolutePath(currentPath, args[1]);
+      await compressFileHandler(pathToFile, pathToDestination);
+    } else if (command === 'decompress' && args.length === 2) {
+      const pathToFile = getAbsolutePath(currentPath, args[0]);
+      const pathToDestination = getAbsolutePath(currentPath, args[1]);
+      await decompressFileHandler(pathToFile, pathToDestination)
     }
 
     if (line === '.exit') {
