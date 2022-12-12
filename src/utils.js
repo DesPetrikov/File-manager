@@ -17,13 +17,12 @@ export const getAbsolutePath = (currentPath, newPath) => {
 };
 
 export const parseCommandLine = (commandLine) => {
-  const regExp = /\s(['|"])/g;
-  return regExp.test(commandLine)
-    ? commandLine
-        .replace(regExp, '*$1')
-        .split('*')
-        .map((chunk) => chunk.replace(/^['|"]|['|"]$/g, ''))
-    : commandLine.split(' ');
+  const regExp = /(['"])(.*?)\1/g;
+  return commandLine
+    .replace(regExp, (match) => match.replace(' ', '|'))
+    .split(' ')
+    .map((chunk) => chunk.replace(regExp, (_, __, p2) => p2.replace('|', ' ')))
+    .filter(Boolean);
 };
 
 export const setNewPath = async (currentPath, newPath, commandName) => {

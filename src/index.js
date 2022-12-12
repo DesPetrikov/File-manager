@@ -35,8 +35,8 @@ const rl = readline.createInterface({
 });
 
 rl.on('line', async (line) => {
+  const [command, ...args] = parseCommandLine(line);
   try {
-    const [command, ...args] = parseCommandLine(line);
     const absolutePathFromFirstArg =
       args[0] && getAbsolutePath(currentPath, args[0]);
     const absolutePathFromSecondArg =
@@ -77,7 +77,7 @@ rl.on('line', async (line) => {
       await compressFile(absolutePathFromFirstArg, absolutePathFromSecondArg);
     } else if (command === 'decompress' && args.length === 2) {
       await decompressFile(absolutePathFromFirstArg, absolutePathFromSecondArg);
-    } else if (line === '.exit') {
+    } else if (command === '.exit') {
       rl.close();
     } else {
       throw new Error('Invalid input');
@@ -85,13 +85,13 @@ rl.on('line', async (line) => {
   } catch (error) {
     console.error(error.message);
   } finally {
-    console.log(`You are currently in ${currentPath}`);
+    if (command !== '.exit') {
+      console.log(`You are currently in ${currentPath}`);
+    }
   }
 });
 
-rl.on('SIGINT', () => {
-  rl.close();
-});
+rl.on('SIGINT', rl.close);
 
 rl.on('close', () => {
   console.log(onCloseScriptPhrase);
