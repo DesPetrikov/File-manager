@@ -5,18 +5,24 @@ export const showListOfItems = async (path) => {
     directory: [],
     file: [],
   };
-  const files = await readdir(path, {withFileTypes: true});
-  for (let item of files) {
-	 const isDirectory = item.isDirectory()
-    isDirectory ? itemsList.directory.push(item.name) : itemsList.file.push(item.name);
-  }
+  try {
+    const files = await readdir(path, { withFileTypes: true });
+    for (let item of files) {
+      const isDirectory = item.isDirectory();
+      isDirectory
+        ? itemsList.directory.push(item.name)
+        : itemsList.file.push(item.name);
+    }
 
-  const sortedItems = Object.entries(itemsList)
-    .map((category) =>
-      category[1]
-        .sort((a, b) => a.toLowerCase() - b.toLowerCase())
-        .map((item) => ({ Name: item, Type: category[0] }))
-    )
-    .flat();
-  console.table(sortedItems);
+    const sortedItems = Object.entries(itemsList)
+      .map((category) =>
+        category[1]
+          .sort((a, b) => a.toLowerCase() - b.toLowerCase())
+          .map((item) => ({ Name: item, Type: category[0] }))
+      )
+      .flat();
+    console.table(sortedItems);
+  } catch {
+    console.error('Operation failed');
+  }
 };
