@@ -1,6 +1,4 @@
 import { readdir } from 'node:fs/promises';
-import { join } from 'node:path';
-import { checkIsDirectory } from './utils.js';
 
 export const listOfItemsHandler = async (path) => {
   const itemsList = {

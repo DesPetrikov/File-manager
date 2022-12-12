@@ -4,13 +4,13 @@ import { homedir } from 'os';
 import { resolve } from 'node:path';
 import { access } from 'node:fs/promises';
 import { checkIsDirectory, getAbsolutePath } from './utils.js';
-import { listOfItemsHandler } from './list.js';
-import { readFileHandler } from './read.js';
-import { addFileHandler } from './add.js';
-import { renameFileHandler } from './rename.js';
-import { copyFileHandler } from './copy.js';
-import { moveFileHandler } from './move.js';
-import { deleteFileHandler } from './delete.js';
+import { listOfItemsHandler } from './fs/list.js';
+import { readFileHandler } from './fs/read.js';
+import { addFileHandler } from './fs/add.js';
+import { renameFileHandler } from './fs/rename.js';
+import { copyFileHandler } from './fs/copy.js';
+import { moveFileHandler } from './fs/move.js';
+import { deleteFileHandler } from './fs/delete.js';
 import { getEOL } from './os/eol.js';
 import { getCpusInfo } from './os/cpus.js';
 import { getHomeDirectory } from './os/homeDir.js';
@@ -80,7 +80,7 @@ rl.on('line', async (line) => {
     } else if (command === 'decompress' && args.length === 2) {
       const pathToFile = getAbsolutePath(currentPath, args[0]);
       const pathToDestination = getAbsolutePath(currentPath, args[1]);
-      await decompressFileHandler(pathToFile, pathToDestination)
+      await decompressFileHandler(pathToFile, pathToDestination);
     }
 
     if (line === '.exit') {

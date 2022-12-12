@@ -1,7 +1,7 @@
 import { checkIsDirectory } from '../utils.js';
-import { basename, join, parse } from 'node:path';
+import { join, parse } from 'node:path';
 import { createReadStream, createWriteStream } from 'node:fs';
-import { createBrotliCompress, createBrotliDecompress } from 'node:zlib';
+import { createBrotliDecompress } from 'node:zlib';
 import { pipeline } from 'node:stream/promises';
 import { rm } from 'node:fs/promises';
 
