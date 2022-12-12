@@ -19,9 +19,9 @@ export const getAbsolutePath = (currentPath, newPath) => {
 export const parseCommandLine = (commandLine) => {
   const regExp = /(['"])(.*?)\1/g;
   return commandLine
-    .replace(regExp, (match) => match.replace(' ', '|'))
+    .replace(regExp, (_, __, p2) => p2.replace(/\s/g, '|'))
     .split(' ')
-    .map((chunk) => chunk.replace(regExp, (_, __, p2) => p2.replace('|', ' ')))
+    .map((chunk) => chunk.replace(/\|/g, ' '))
     .filter(Boolean);
 };
 
