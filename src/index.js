@@ -24,7 +24,10 @@ const rl = readline.createInterface({
 
 rl.on('line', async (line) => {
   try {
-    const [command, ...args] = line.split(' ');
+    const regExp = /\s(['|"])/g;
+    const [command, ...args] = regExp.test(line)
+      ? line.replace(regExp, '*$1').split('*').map(chunk => chunk.replace(/^['|"]|['|"]$/g, ''))
+      : line.split(' ');
     if (command === 'up' && args.length === 0) {
       await setNewPath('../');
     } else if (command === 'cd' && args[0]) {
@@ -50,18 +53,18 @@ rl.on('line', async (line) => {
     } else if (command === 'rm' && args.length === 1) {
       await deleteFileHandler(getAbsolutePath(currentPath, args[0]));
     } else if (command === 'os' && args.length === 1) {
-		if(args[0] === '--EOL') {
-			getEOL()
-		} else if (args[0] === '--cpus') {
-			getCpusInfo()
-		} else if (args[0] === '--homedir') {
-			getHomeDirectory()
-		} else if(args[0] === '--username') {
-			getUserName()
-		} else if(args[0] === '--architecture') {
-			getCpuArchitecture()
-		}
-	 }
+      if (args[0] === '--EOL') {
+        getEOL();
+      } else if (args[0] === '--cpus') {
+        getCpusInfo();
+      } else if (args[0] === '--homedir') {
+        getHomeDirectory();
+      } else if (args[0] === '--username') {
+        getUserName();
+      } else if (args[0] === '--architecture') {
+        getCpuArchitecture();
+      }
+    }
 
     if (line === '.exit') {
       rl.close();

@@ -7,11 +7,10 @@ export const listOfItemsHandler = async (path) => {
     directory: [],
     file: [],
   };
-  const files = await readdir(path);
+  const files = await readdir(path, {withFileTypes: true});
   for (let item of files) {
-    const pathToItem = join(path, item);
-    const isDirectory = await checkIsDirectory(pathToItem);
-    isDirectory ? itemsList.directory.push(item) : itemsList.file.push(item);
+	 const isDirectory = item.isDirectory()
+    isDirectory ? itemsList.directory.push(item.name) : itemsList.file.push(item.name);
   }
 
   const sortedItems = Object.entries(itemsList)
