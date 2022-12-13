@@ -48,7 +48,7 @@ rl.on('line', async (line) => {
     } else if (command === 'ls' && args.length === 0) {
       await showListOfItems(currentPath);
     } else if (command === 'cat' && args.length === 1) {
-      readFile(absolutePathFromFirstArg);
+      await readFile(absolutePathFromFirstArg);
     } else if (command === 'add' && args.length === 1) {
       await addFile(absolutePathFromFirstArg);
     } else if (command === 'rn' && args.length === 2) {
