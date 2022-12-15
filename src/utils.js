@@ -36,13 +36,17 @@ export const setNewPath = async (currentPath, newPath, commandName) => {
 };
 
 export const userNameHandler = () => {
-  const userName = argv
-    .find((args) => args.startsWith('--username'))
-    .split('=')[1];
-  const greetingPhrase = `Welcome to the File Manager, ${userName}!`;
-  const onCloseScriptPhrase = `Thank you for using File Manager, ${userName}, goodbye!`;
-  return {
-    greetingPhrase,
-    onCloseScriptPhrase,
-  };
+  try {
+    const userName = argv
+      .find((args) => args.startsWith('--username'))
+      .split('=')[1];
+    const greetingPhrase = `Welcome to the File Manager, ${userName}!`;
+    const onCloseScriptPhrase = `Thank you for using File Manager, ${userName}, goodbye!`;
+    return {
+      greetingPhrase,
+      onCloseScriptPhrase,
+    };
+  } catch {
+    throw new Error('Invalid input');
+  }
 };
