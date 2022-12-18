@@ -1,5 +1,5 @@
 import { checkIsDirectory } from '../utils.js';
-import { join, parse } from 'node:path';
+import { basename, join } from 'node:path';
 import { createReadStream, createWriteStream } from 'node:fs';
 import { createBrotliDecompress } from 'node:zlib';
 import { pipeline } from 'node:stream/promises';
@@ -8,7 +8,7 @@ import { rm } from 'node:fs/promises';
 export const decompressFile = async (pathToFile, pathToDestination) => {
   try {
     const isDestinationDirectory = await checkIsDirectory(pathToDestination);
-    const baseNameFromFile = parse(pathToFile).name;
+    const baseNameFromFile = basename(pathToFile, '.br');
     const pathToUnzipFile = isDestinationDirectory
       ? join(pathToDestination, baseNameFromFile)
       : pathToDestination;

@@ -1,5 +1,5 @@
 import { checkIsDirectory } from '../utils.js';
-import { join, parse } from 'node:path';
+import { basename, join } from 'node:path';
 import { createReadStream, createWriteStream } from 'node:fs';
 import { createBrotliCompress } from 'node:zlib';
 import { pipeline } from 'node:stream/promises';
@@ -7,7 +7,7 @@ import { pipeline } from 'node:stream/promises';
 export const compressFile = async (pathToFile, pathToDestination) => {
   try {
     const isDestinationDirectory = await checkIsDirectory(pathToDestination);
-    const nameFromPath = parse(pathToFile).name;
+    const nameFromPath = basename(pathToFile);
     const pathToZipFile = isDestinationDirectory
       ? join(pathToDestination, `${nameFromPath}.br`)
       : pathToDestination;
